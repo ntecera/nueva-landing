@@ -1,4 +1,5 @@
 node_modules/
 *.pdf
+!Reinicia-tu-Foco.pdf
 .DS_Store
 .env
