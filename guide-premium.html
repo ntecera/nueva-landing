@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reinicia tu Foco — Premium Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 25mm 25mm; }
+  @page edge-to-edge { margin: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+  body { font-size: 11pt; line-height: 1.6; color: #2a2a3e; background: #fff; }
+
+  /* 1. SECCIONES EDGE TO EDGE */
+  .cover { 
+    page: edge-to-edge; height: 100vh; background: radial-gradient(circle at top right, #0a1128, #010308); 
+    color: #fff; display: flex; flex-direction: column; padding: 25mm; position: relative; page-break-after: always;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(0, 229, 195, 0.05) 0%, transparent 60%); z-index: 0; pointer-events: none;
+  }
+  .cover-content { position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+  .cover-badge { 
+    display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.1); 
+    border-left: 3px solid #00e5c3; border-radius: 2px; font-size: 10pt; font-weight: 600; 
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 40px; width: fit-content;
+  }
+  .cover h1 { font-size: 56pt; font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
+  .cover h1 .highlight { color: #00e5c3; display: block; }
+  .cover p.subtitle { font-size: 14pt; font-weight: 300; color: #a1abc0; max-width: 500px; line-height: 1.5; }
+  
+  .cover-footer { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-footer .author { font-size: 14pt; font-weight: 700; }
+  .cover-footer .edition { font-size: 10pt; color: #00e5c3; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+  .chapter-cover { 
+    page: edge-to-edge; height: 100vh; background: #f8f9fc; display: flex; 
+    page-break-before: always; page-break-after: always; 
+  }
+  .chapter-left { width: 30%; background: #0a1128; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .chapter-num { font-size: 140pt; font-weight: 900; color: rgba(255,255,255,0.06); line-height: 0.8; margin: 0; padding: 0; transform: rotate(-90deg); }
+  .chapter-right { width: 70%; padding: 25mm; display: flex; flex-direction: column; justify-content: center; }
+  .chapter-label { font-size: 10pt; font-weight: 700; color: #0094ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; }
+  .chapter-title { font-size: 40pt; font-weight: 900; color: #0a1128; line-height: 1.1; letter-spacing: -1px; margin-bottom: 30px; }
+  .chapter-desc { font-size: 14pt; color: #5a6480; font-weight: 300; line-height: 1.6; border-left: 4px solid #00e5c3; padding-left: 20px; }
+
+  /* 2. DISEÑO CONTINUO (Fluido) */
+  .toc-title { font-size: 26pt; font-weight: 800; margin-bottom: 30px; margin-top: 10px; color: #0a1128; }
+  .toc-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #edf1f7; font-size: 11pt; }
+  .toc-item.chapter { font-weight: 800; padding-top: 18px; color: #0094ff; border-bottom: 2px solid #edf1f7; }
+
+  h2.section { font-size: 20pt; font-weight: 800; color: #0a1128; margin: 35px 0 15px 0; letter-spacing: -0.5px; page-break-after: avoid; }
+  h3.sub { font-size: 14pt; font-weight: 700; color: #2a2a3e; margin: 25px 0 10px 0; border-bottom: 1px solid #edf1f7; padding-bottom: 5px; page-break-after: avoid; }
+  p { margin-bottom: 15px; font-size: 11pt; color: #4a5568; }
+  strong { color: #0a1128; }
+  
+  ul.bullets, ol.steps { margin: 15px 0; padding-left: 0; list-style: none; }
+  ul.bullets li { padding: 5px 0 5px 24px; position: relative; color: #4a5568; margin-bottom: 8px; page-break-inside: avoid; }
+  ul.bullets li::before { content: '→'; position: absolute; left: 0; color: #0094ff; font-weight: bold; }
+
+  ol.steps { counter-reset: custom-step; }
+  ol.steps li { padding: 6px 0 6px 36px; position: relative; color: #4a5568; margin-bottom: 10px; page-break-inside: avoid; }
+  ol.steps li::before { content: counter(custom-step); counter-increment: custom-step; position: absolute; left: 0; top: 4px; width: 22px; height: 22px; background: #0a1128; color: #fff; font-size: 9pt; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+
+  /* Cajas Visuales Compactas */
+  .box { margin: 20px 0; padding: 20px 24px; border-radius: 12px; background: #fff; border: 1px solid #edf1f7; page-break-inside: avoid; }
+  .box-title { font-size: 11pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; }
+  .box-key { border-top: 4px solid #0094ff; background: #f0f7ff; }
+  .box-key .box-title { color: #0073cc; }
+  .box-action { border-top: 4px solid #00e5c3; background: #e6fcf8; }
+  .box-action .box-title { color: #00b398; }
+  .box-exercise { border-top: 4px solid #8c52ff; background: #f4f0ff; }
+  .box-exercise .box-title { color: #6e3ad6; }
+  .box-error { border-top: 4px solid #ff4757; background: #fff0f1; }
+  .box-error .box-title { color: #d63031; }
+
+  /* Tablas y Checklists fluidas */
+  .data-table { width: 100%; border-collapse: collapse; margin: 20px 0; page-break-inside: avoid; }
+  .data-table th { background: #0a1128; color: #fff; padding: 12px 14px; text-align: left; font-size: 9pt; text-transform: uppercase; letter-spacing: 1px; }
+  .data-table td { padding: 12px 14px; border-bottom: 1px solid #edf1f7; color: #4a5568; font-size: 10.5pt; }
+  .data-table tr:nth-child(even) td { background: #f8f9fc; }
+
+  .checklist { margin: 20px 0; border: 1px solid #edf1f7; border-radius: 8px; overflow: hidden; page-break-inside: avoid; }
+  .checklist-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; border-bottom: 1px solid #edf1f7; background: #fff; }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-box { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .checklist-text { font-size: 10.5pt; color: #4a5568; font-weight: 500; }
+
+  /* Elementos Visuales Extras */
+  .chapter-image { width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px; margin: 20px 0; page-break-inside: avoid; border: 1px solid #edf1f7; box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  
+  .calendar-container { display: flex; flex-wrap: wrap; gap: 15px; margin: 25px 0; }
+  .calendar-day { flex: 1 1 calc(50% - 15px); box-sizing: border-box; border: 2px solid #edf1f7; border-radius: 12px; padding: 15px; background: #fff; page-break-inside: avoid; }
+  .calendar-day.highlight { border-color: #0094ff; background: #f0f7ff; }
+  .day-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #edf1f7; padding-bottom: 8px; margin-bottom: 12px; }
+  .day-title { font-weight: 800; color: #0a1128; font-size: 11pt; }
+  .day-checkbox { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 4px; background: #fff; }
+  .day-task { font-size: 10.5pt; color: #4a5568; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px;}
+  .day-task::before { content: '•'; color: #00e5c3; font-weight: bold; }
+
+  /* Estadísticas rediseñadas */
+  .stat-row { display: flex; gap: 14px; margin: 20px 0; page-break-inside: avoid; }
+  .stat-box { flex: 1; background: #f0f7ff; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #d6edff; }
+  .stat-box .num { font-size: 26pt; font-weight: 900; color: #0094ff; line-height: 1; }
+  .stat-box .lbl { font-size: 9pt; color: #4a5568; margin-top: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+
+  /* Hoja final Edge-to-Edge */
+  .final-page {
+    page: edge-to-edge; height: 100vh; background: #0a1128; color: #fff;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 25mm; text-align: center; page-break-before: always;
+  }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-content">
+    <div class="cover-badge">Premium Edition Completa</div>
+    <h1>Reinicia<br><span class="highlight">tu Foco</span></h1>
+    <p class="subtitle">El sistema definitivo basado en neurociencia para hackear tu dopamina, eliminar distracciones y triplicar tu productividad mediante el trabajo profundo.</p>
+  </div>
+  <div class="cover-footer">
+    <div class="author">La Guía Premium y Cuaderno de Trabajo (24+ Páginas)</div>
+    <div class="edition">Edición 2026</div>
+  </div>
+</div>
+
+<!-- ÍNDICE (Fluye normal) -->
+<h2 class="toc-title">Tabla de Contenido</h2>
+<div class="toc-item chapter"><span>Capítulo 1: La Crisis de Atención Digital</span></div>
+<div class="toc-item"><span>El secuestro de la Dopamina y el costo real de la distracción</span></div>
+<div class="toc-item chapter"><span>Capítulo 2: Diagnóstico Digital</span></div>
+<div class="toc-item"><span>Test de Dependencia y Mapa de Disparadores</span></div>
+<div class="toc-item chapter"><span>Capítulo 3: El Método Reinicia en 3 Pasos</span></div>
+<div class="toc-item"><span>Auditoría, Barreras Digitales y Rutina Definitiva</span></div>
+<div class="toc-item chapter"><span>Capítulo 4: El Plan Interactivo de 7 Días</span></div>
+<div class="toc-item"><span>Calendario Visual de Foco Diario a tachar</span></div>
+<div class="toc-item chapter"><span>Capítulo 5: Ejercicios Prácticos Profesionales</span></div>
+<div class="toc-item"><span>Inventario Médico y Modificadores de Conducta</span></div>
+<div class="toc-item chapter"><span>Capítulo 6: Checklist de Desintoxicación</span></div>
+<div class="toc-item"><span>Búnker de Arquitectura para Celular y PC</span></div>
+<div class="toc-item chapter"><span>Capítulo 7: Las Plantillas Premium de Enfoque</span></div>
+<div class="toc-item"><span>Planilla Matutina, Deep Work Semanal y Trackers visuales</span></div>
+
+<!-- ================= CAP 1 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">01</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 1: Consciencia</span>
+    <h1 class="chapter-title">La Crisis de Atención Digital</h1>
+    <p class="chapter-desc">Entendiendo por qué tu cerebro pierde la batalla contra las notificaciones, las redes sociales y el exceso masivo de información en la era moderna.</p>
+  </div>
+</div>
+
+<h2 class="section">Tu cerebro no fue diseñado para esto</h2>
+<img src="assets/brain.png" class="chapter-image" alt="Dopamine Synapses Abstract Visual">
+<p>Estamos viviendo la mayor crisis de atención de la historia humana. Cada día, el ser humano promedio consume más información de la que una persona del siglo XV procesaba en toda su vida.</p>
+<p>Tu cerebro evolucionó durante miles de años para enfocarse en una tarea a la vez, detectar cambios en el entorno y responder a estímulos urgentes. Hoy, la tecnología explota exactamente estos mecanismos para mantenerte adicto.</p>
+
+<div class="stat-row">
+  <div class="stat-box"><div class="num">150+</div><div class="lbl">Desbloqueos diarios</div></div>
+  <div class="stat-box"><div class="num">23 min</div><div class="lbl">Para re-enfocarte</div></div>
+  <div class="stat-box"><div class="num">4.7h</div><div class="lbl">Perdidas al día</div></div>
+</div>
+
+<h3 class="sub">La economía de la atención y la Dopamina</h3>
+<p>Las redes sociales no son gratis. Tú pagas con tu activo vital más importante: Tu Atención. Equipos enteros de ingenieros y neurólogos realizan pruebas A/B constantemente con colores, retrasos e interfaces para doblegar a tu cerebro reptiliano.</p>
+<p>Plataformas enteras operan bajo la <em>"Recompensa Variable"</em>. Al no saber qué encontrarás al deslizar la pantalla, tu cerebro segrega dopamina en anticipación. Eres prisionero del algoritmo perfecto.</p>
+
+<div class="box box-key">
+  <div class="box-title">💡 Dato Clave: La Verdad Detrás de Sus Oficinas</div>
+  <p>Silicon Valley contrata expertos en la psicología de los casinos de Las Vegas. El scroll infinito, y la pausa de espera antes de que cargue el "like" simulan biológicamente el jalar la palanca de una máquina tragamonedas de un casino.</p>
+</div>
+
+<h2 class="section">El costo real destructivo</h2>
+<p>Las distracciones digitales no solo te roban horas de reloj. Tienen un impacto agresivo en tu cociente intelectual, tu ansiedad base y la densidad de tus capacidades de razonamiento analítico.</p>
+
+<h3 class="sub">Impacto Cognitivo (Residuo de Atención)</h3>
+<ul class="bullets">
+  <li>Cada vez que desvías tu vista al celular y vuelves, un 40% de tu poder mental sigue atascado procesando lo que viste (Residuo de Atención).</li>
+  <li>El "multitasking" (hacer 2 tareas a la vez) es un mito neuronal. El cerebro hace "Switch-Tasking". Tras 2 horas de esto, tu coeficiente intelectual disminuye hasta en 10 puntos operativos temporales.</li>
+  <li>Memoria de Trabajo mutilada: Aún con el celular apagado boca abajo en la mesa, tu cognición destina recursos a "ignorarlo", volviéndote más tonto al leer (Universidad de Texas).</li>
+</ul>
+
+<div class="box box-error">
+  <div class="box-title">⚠️ Advertencia: La Paradoja de Estar Ocupado</div>
+  <p>Estar contestando correos rápido no es ser productivo. Sentirte rebasado de tareas mientras estás hiper-conectado destruye el Trabajo Profundo y la Innovación.</p>
+</div>
+
+<!-- ================= CAP 2 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">02</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 2: Medición Directa</span>
+    <h1 class="chapter-title">Diagnóstico Digital Extremo</h1>
+    <p class="chapter-desc">Antes de aplicar la cura, debes medir la herida. Mapearemos exactamente tus patrones tóxicos para cortarlos de raíz con frialdad matemática.</p>
+  </div>
+</div>
+
+<h2 class="section">El Test de Dependencia Asintomática</h2>
+<p>Responde cada pregunta puntuando en la tabla. 1=Nunca / 5=Siempre. Suma tu puntaje final y sé hiper honesto en tu medición.</p>
+
+<table class="data-table">
+  <tr>
+    <th>Pregunta Diagnóstica</th>
+    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+  </tr>
+  <tr><td>¿Revisas tu celular dentro de los primeros 10 minutos al despertar sin excepción?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Sientes agobio respiratorio ligero si sales a la calle y olvidaste tu teléfono?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Pasas horas de scroll que no planeaste y te culpas al terminar?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Interrumpes tu redacción/tarea difícil para abrir otra pestaña cada 5 minutos?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Entras en pánico si la batería cae por debajo del 15%?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Tu último estímulo óptico del día antes de dormir en la oscuridad es una pantalla brillante?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Has intentado reducir tu consumo de redes varias veces fracasando al día 3?</td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>¿Revisas el correo de trabajo de noche sabiendo que no puedes resolverlo hasta mañana?</td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<div class="box box-action">
+  <div class="box-title">🔎 RESULTADOS DEL DIAGNÓSTICO</div>
+  <p><strong>0 - 15 Puntos:</strong> Control Soberano. Perteneces al 2% de la población.<br>
+  <strong>16 - 25 Puntos:</strong> Daño moderado. Síntomas incipientes de desgaste cognitivo.<br>
+  <strong>26 - 40 Puntos: Dependencia Aguda. Tu cerebro reacciona pavlovianamente y tu foco es deficiente. Debes aplicar esta guía urgente.</strong></p>
+</div>
+
+<h2 class="section">Mapeo Racional de Disparadores</h2>
+<p>La adicción a los smartphones sigue un modelo clínico predecible (Modelo Hook de Nir Eyal). No abres la red social "por gusto", lo haces porque buscas un analgésico temporal frente a una emoción incómoda que se disparó segundos antes.</p>
+
+<div class="box box-exercise">
+  <div class="box-title">✍️ Ejercicio: Reconocimiento de Patrón</div>
+  <p>Durante las próximas 48 horas lleva una bitácora y responde a esta pregunta obligatoria: <em>¿Qué emoción estaba eludiendo justo antes de tocar la pantalla?</em></p>
+  <ul class="bullets" style="margin-top: 10px;">
+    <li>¿Fricción? <em>(El informe era muy duro de redactar y mi mente pidió escape)</em></li>
+    <li>¿Aburrimiento? <em>(La fila en el súper era monótona y saqué el móvil)</em></li>
+    <li>¿Ansiedad social? <em>(Llegué primero a la reunión y no supe a dónde mirar)</em></li>
+  </ul>
+</div>
+
+<!-- ================= CAP 3 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">03</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 3: Ejecutión Operativa</span>
+    <h1 class="chapter-title">El Método Reinicia en 3 Pasos</h1>
+    <p class="chapter-desc">Un sistema robusto diseñado para no depender de tu frágil fuerza de voluntad, sino de la arquitectura de tu contexto.</p>
+  </div>
+</div>
+
+<h2 class="section">Paso 1: La Auditoría de Pantallas</h2>
+<p>Antes de arrasar con las aplicaciones, vas a enfrentar los números reales de tu dispositivo. Ve ahora mismo a "Tiempo de Pantalla" (iOS) o "Bienestar Digital" (Android) y confronta la realidad de esta semana frente al promedio mundial aceptable.</p>
+
+<table class="data-table">
+  <tr>
+    <th>KPI (Indicador de Distracción)</th>
+    <th>Métrica en Alerta Roja</th>
+    <th>Anota TU Número Real</th>
+  </tr>
+  <tr>
+    <td>Uso diario bruto del móvil</td>
+    <td>Mayor a 3 Horas y 30 Minutos</td>
+    <td>____ Hrs ____ Mins</td>
+  </tr>
+  <tr>
+    <td>Pickup Rate (Número de desbloqueos)</td>
+    <td>Mayor a 75 veces diarias</td>
+    <td>____ Desbloqueos</td>
+  </tr>
+  <tr>
+    <td>App Vampiro Principal</td>
+    <td>Instagram/TikTok superior a 45min</td>
+    <td>________________</td>
+  </tr>
+</table>
+
+<h2 class="section">Paso 2: Arquitectura y Desintoxicación Ciega</h2>
+<p>La voluntad se agota, las barreras estrictas en la interfaz del dispositivo son permanentes. Vamos a construir barreras inquebrantables entre tu estímulo primario de distracción y tú.</p>
+
+<h3 class="sub">Nivel de Choque (Para el Móvil)</h3>
+<ul class="bullets">
+  <li><strong>El Apocalipsis de Notificaciones:</strong> La directriz es simple. Entra a "Notificaciones" y apaga el Switch global de TODAS LAS APPS. Incluyendo el correo. Un humano enfocado no responde al silbido de una máquina, sino que revisa herramientas solo cuando él decide entrar a explorarlas.</li>
+  <li><strong>Pantalla Limpia y Descolorida:</strong> Si pasas tu pantalla a escala de grises (Blanco y Negro desde ajustes de accesibilidad), la dopamina química generada por las burbujas rojas disminuye al instante en casi un 45%. Se siente como mirar un bloque aburrido de metal gris.</li>
+</ul>
+
+<h3 class="sub">Nivel Fortaleza (Para la PC de Generación de Riqueza)</h3>
+<ul class="bullets">
+  <li>Instala extensores que purguen algoritmos. Recomendación Absoluta: <em>News Feed Eradicator</em>. Destruirá permanentemente tu muro infinito de Facebook, Linkedin o X/Twitter sustituyéndolo por una placa en blanco con una frase budista célebre. Así puedes entrar a contestar un mensaje urgente, sin recaer en media hora perdida al scrollear sin razón.</li>
+</ul>
+
+<h2 class="section">Paso 3: Rutina Definitiva de Enfoque Profundo</h2>
+<p>El objetivo de purgar la tecnología mala no reside en sentirte "minimalista", reside en salvaguardar y proteger la gema más preciosa del conocimiento actual: tú "Deep Work" o Trabajo Profundo.</p>
+
+<ol class="steps">
+  <li><strong>Aplica el Pomodoro Modificado 90/20.</strong> Los famosos 25 minutos son estúpidamente ineficientes para el trabajo cognitivamente desafiante ya que el cerebro gasta 10 min recordando de qué trataba el tema principal. Usa bloques pesados ininterrumpidos de 90 minutos para crear material asombroso.</li>
+  <li><strong>La Norma Absoluta de los 2 Minutos de Surf:</strong> Al trabajar profundamente, el deseo de agarrar el teléfono te atacará físicamente casi causándote picores, eso es síndrome de abstinencia digital. Cuando ocurra cierra tus ojos e intenta "surfear esa urgencia" por sólo 2 minutos, observando tu desesperación sin ceder táctilmente, al cruzar esa ventana breve de tiempo el córtex calmará la excitación.</li>
+</ol>
+
+<!-- ================= CAP 4 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">04</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 4: El Reto Asignado</span>
+    <h1 class="chapter-title">El Plan Interactivo de 7 Días</h1>
+    <p class="chapter-desc">Una hoja de ruta secuencial que te prohíbe escalar y querer perfeccionarlo todo el día 1, diseñada para desenganchar neuronas un paso y un día a la vez.</p>
+  </div>
+</div>
+
+<h2 class="section">Calendario Visual de Foco</h2>
+<p>Instrucción: Completa y lee solo la tarea del día en el que te encuentras y ejecuta 100% de la carga del cuadro correspondiente. La acción de dar "Check" con un plumón azul es crucial aquí.</p>
+
+<div class="calendar-container">
+  <div class="calendar-day highlight">
+    <div class="day-header"><span class="day-title">DÍA 1: La Poda Primaria</span><div class="day-checkbox"></div></div>
+    <div class="day-task">Aplico hoy el "Apocalipsis de Notificaciones" matando ruidos e insignias de apps.</div>
+    <div class="day-task">Limpio la pantalla de inicio dejando sólo herramientas puras (Mapas, Uber).</div>
+    <div class="day-task">Busco e instalo el News Feed Eradicator y mi extensión de bloqueador (Ej. ColdTurkey).</div>
+  </div>
+  
+  <div class="calendar-day">
+    <div class="day-header"><span class="day-title">DÍA 2: Higiene Mecánica</span><div class="day-checkbox"></div></div>
+    <div class="day-task">Muda físicamente el cargador y enchufe fuera de tu dormitorio.</div>
+    <div class="day-task">El teléfono dormirá solo en la cocina o salón toda la noche.</div>
+    <div class="day-task">Configura "No molestar" estricto automático entre 10 PM y 8 AM.</div>
+  </div>
+
+  <div class="calendar-day">
+    <div class="day-header"><span class="day-title">DÍA 3: Ayuno Cíclico</span><div class="day-checkbox"></div></div>
+    <div class="day-task">El Gran Desafío: 45 minutos enteros pos despertar sin pantalla frontal.</div>
+    <div class="day-task">Bebe medio litro de agua y saluda a alguien real en la casa o al menos observa el tráfico por la ventana absorbiendo rango lumínico real.</div>
+  </div>
+
+  <div class="calendar-day">
+    <div class="day-header"><span class="day-title">DÍA 4: Bautizo de Deep Work</span><div class="day-checkbox"></div></div>
+    <div class="day-task">Selecciona una T.U.I (Tarea Única Importante, aquella que asusta por su dureza).</div>
+    <div class="day-task">Ejecuta los 90 Minutos de tu Pomodoro avanzado sobre ella, aislando en avión tu celular.</div>
+  </div>
+
+  <div class="calendar-day">
+    <div class="day-header"><span class="day-title">DÍA 5: Ayuno de Aburrimiento</span><div class="day-checkbox"></div></div>
+    <div class="day-task">Desafío: Cero salvavidas móviles en filas, salas de espera o baños.</div>
+    <div class="day-task">Vuelve a permitirte sentir curiosidad auténtica de observar a otros o el panorama.</div>
+  </div>
+
+  <div class="calendar-day">
+    <div class="day-header"><span class="day-title">DÍA 6: Batches Masivos</span><div class="day-checkbox"></div></div>
+    <div class="day-task">Comunica mediante lotes. Prohíbete leer a cuentagotas los Mails.</div>
+    <div class="day-task">Acumúlalos. Ábrelos de 11:30 a 12:00, y revísalos de 4:30 a 5:00. Listo. Salvaguarda tu reserva atencional.</div>
+  </div>
+</div>
+
+<div class="box box-action">
+  <div class="box-title">🏆 DÍA 7: La Solidificación del Ritual de Cierre</div>
+  <p>Implantación definitiva del Shut-Down: Inicia a apagar dispositivos a una hora forzosa. Limpia tu bandeja de inbox, escribe el post-it del día posterior, levanta las manos, di fuerte la palabra "Terminado" para anclarlo en el subconsciente y abandona las labores.</p>
+</div>
+
+<!-- ================= CAP 5 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">05</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 5: Mantenimiento</span>
+    <h1 class="chapter-title">Ejercicios Prácticos Profesionales</h1>
+    <p class="chapter-desc">Habilidades kinestésicas de menos de 10 minutos diseñadas para restaurar el hipocampo y reiniciar el estado de alerta cuando fallas.</p>
+  </div>
+</div>
+
+<h2 class="section">Visualización de Flujo</h2>
+<img src="assets/flow.png" class="chapter-image" alt="Cyberpunk flow state energy tunnel">
+<p>El *Flow State* (flujo) ocurre cuando el 100% de la energía mental se enfoca como un túnel de láser puro, libre de distracciones y barreras. Llegar a este estado te da resultados exponenciales con mucho menos sufrimiento.</p>
+
+<h3 class="sub">Ejercicio Biológico 1: La Pausa Frontal de 60 Segundos</h3>
+<p>Reprogramaremos tu subconsciente rompiendo mecánicas del pulgar.</p>
+<ol class="steps">
+  <li>Saca tu teléfono, pero no toques la pantalla aún. Solo míralo fijamente.</li>
+  <li>Pregúntate mentalmente a ti mismo: "¿Y exactamente qué información tan revolucionaria vine a buscar aquí a esta hora?"</li>
+  <li>Si la respuesta resulta vaga, guárdalo y festeja internamente tu micro victoria cognitiva.</li>
+</ol>
+
+<h3 class="sub">Ejercicio Biológico 2: Meditación Neuro-Restauradora (5 min)</h3>
+<p>El músculo del enfoque se entrena mediante retornos violentos ante distracciones, como en las mancuernas de los gimnasios.</p>
+<ol class="steps">
+  <li>Cierra los ojos. No analices posiciones raras de gurús. Solo en tu silla, erguido.</li>
+  <li>Observa en tu pecho la expansión pulmonar cada que cuentas un ciclo del 1 al 10 en tu mente.</li>
+  <li>Cuando surja tu tarea pospuesta, deudas o memorias tristes (pasará 100%), lo ignoras de tajo volviendo inmediatamente la atención puramente hacia tu nariz ingresando el aire. Acabas de hacer 1 repetición muscular mental. Hazlo 5 minutos para oxigenar tu atención.</li>
+</ol>
+
+<div class="box box-key">
+  <div class="box-title">🎧 Ejercicio Extra: Triggers de Audio-Aislamiento</div>
+  <p>Selecciona una banda sonora sin letra conocida y repítela al extremo en un solo bucle. Conviértela en tu ancla pavloviana definitiva. Las ondas Alfa inducidas con auriculares de reducción de ruido formarán las tapias laterales a tu creatividad.</p>
+</div>
+
+<!-- ================= CAP 6 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">06</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 6: Barridas Sistémicas</span>
+    <h1 class="chapter-title">Checklists de Desintoxicación</h1>
+    <p class="chapter-desc">Hojas operacionales contundentes para aplicarse como bombero forestal cada 2 meses revisando que tu entorno digital no se haya corrompido lentamente nuevamente.</p>
+  </div>
+</div>
+
+<h2 class="section">Checklist A) Infraestructura del Smartphone</h2>
+<div class="checklist">
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Rastreo Anotado:</strong> Registré en mi bitácora cuántas veces tomé el celular de forma zombi.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Cero Notificaciones:</strong> WhatsApp/Telegram silenciado en casi todos los grupos o carpetas. Todo en "Mute/No Push".</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Ocultación Visual:</strong> Instagram, TikTok, LinkedIn exiliados a capetas enterradas obligando al buscador interno para ser accedidas con nombre directo.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Purgas Físicas:</strong> Desinstaladas 3 apps "espejismo" que no has pulsado ni una vez en los últimos 25 días.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Horarios Fijos:</strong> Puesta marcha de No Molestar Nocturno (Bloqueo Duro Activo).</div></div>
+</div>
+
+<h2 class="section">Checklist B) Infraestructura del Computador</h2>
+<div class="checklist">
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Cero Bandejas Llenas:</strong> Práctica de "Inbox Zero", archivando y etiquetando mails procesados liberando presión óptica en tu buzón activo.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Bloqueo Central (Web):</strong> Extensiones como 'Cold Turkey' funcionando en bucles cerrados de 120 minutos cada mañana sobre los 10 dominios más peligrosos tuyos.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>F11 Full Screen:</strong> Adoptada la regla férrea del botón F11 para forzar aplicaciones como Word Docs u Hojas de Cálculo a ocupar toda la retina visual eliminando barras Windows infernales.</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div class="checklist-text"><strong>Estación Estéril:</strong> Mi escritorio virtual (desktop) alberga un máximo rotundo y contundente de 5 carpetas funcionales o archivos base sin estar atestado a todo el margen.</div></div>
+</div>
+
+<!-- ================= CAP 7 ================= -->
+<div class="chapter-cover">
+  <div class="chapter-left"><div class="chapter-num">07</div></div>
+  <div class="chapter-right">
+    <span class="chapter-label">Fase 7: La Bóveda Operativa</span>
+    <h1 class="chapter-title">Plantillas Premium de Enfoque</h1>
+    <p class="chapter-desc">Marcos de trabajo esquematizados hora por hora para lograr tu jornada más eficiente garantizada.</p>
+  </div>
+</div>
+
+<h2 class="section">Plantilla Definitiva: Jornada de Bloques (Template A)</h2>
+<p>Imprime o transfiere esta estructura métrica a tu Libreta A4 de mesa.</p>
+
+<table class="data-table">
+  <tr><th>Momento del Reloj</th><th>Asignación Estratégica</th><th>Ejecución Restringida (Nota)</th></tr>
+  <tr><td><strong>06:00 - 06:45</strong></td><td>Apertura Corporal / Hidratación Extrema</td><td>0% Pantallas o consumo digital noticioso.</td></tr>
+  <tr><td><strong>06:45 - 07:00</strong></td><td>El Planificador: Tarea Única Diaria Mapeada</td><td>Escritura análoga.</td></tr>
+  <tr><td><strong>07:00 - 08:30</strong></td><td><strong>BLOQUE 1: DEEP WORK INCOMPROMISARIO</strong></td><td>90 Mins. La TUI asignada. Celular 2do piso / modo Avión.</td></tr>
+  <tr><td><strong>08:30 - 08:50</strong></td><td>Receso Regenerativo (Desayuno simple)</td><td>Mirar fijamente objetos estáticos distantes para desenfocar nervio óptico.</td></tr>
+  <tr><td><strong>08:50 - 10:20</strong></td><td><strong>BLOQUE 2: DEEP WORK SECUNDARIO</strong></td><td>90 Mins de Tarea densa complementaria. Base conceptual y redacción de minutas altas.</td></tr>
+  <tr><td><strong>10:20 - 11:20</strong></td><td>BLOQUE 3: Trabajo Superficial Comprimido</td><td>60 Mins para destapar correos, ver slack o coordinar admin trivial. Operar al estilo Batching.</td></tr>
+  <tr><td><strong>11:20 - 12:20</strong></td><td>Pausa Meridiana / Nutrición Base</td><td>Alimentación alejada 100% de luz azul emitente para digestiones asertivas.</td></tr>
+  <tr><td><strong>12:20 - 14:00</strong></td><td><strong>BLOQUE 4: Flujo Práctico Creativo</strong></td><td>Último ciclo intenso. Reuniones requeridas, llamadas o planeación a largo alcance semana a venir.</td></tr>
+  <tr><td><strong>14:00 - 14:15</strong></td><td>RITUAL DE CIERRE SHUT-DOWN.</td><td>Bandeja a ras nivelada y Post-It clavado con notas directas perentorias a solventar al día próximo.</td></tr>
+</table>
+
+<h2 class="section">Matriz Semanal Visual de Seguimiento (Tracker)</h2>
+<p>La fuerza bruta falla con rapidez, la evidencia visual sostiene imperios. Tacha los bloques superados como código de honor ético ante ti mismo semanalmente.</p>
+
+<table class="data-table" style="border: 2px solid #0a1128;">
+  <tr style="background: #0a1128; color: #fff;">
+    <th style="width: 45%;">Hábito de Élite Semanal</th>
+    <th style="text-align: center;">L</th><th style="text-align: center;">M</th><th style="text-align: center;">X</th><th style="text-align: center;">J</th><th style="text-align: center;">V</th><th style="text-align: center;">S</th><th style="text-align: center;">D</th>
+  </tr>
+  <tr><td>Ayuno de Pantalla Matutino Respetado</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Regla celular fuera del Dormitorio Acatada</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Móvil encadenado en Escala de Grises Mantenida</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td><strong>Bloques de Enfoque Profundo Computados (Anota Núm)</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Transiciones de Transporte libres de pantallas dadas</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Ritual de Cierre Oficial (Shut-Down) Marcado</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<!-- ================= FINAL ================= -->
+<div class="final-page">
+  <div style="max-width: 650px;">
+    <h2 style="font-size: 34pt; font-weight: 900; line-height: 1.1; margin-bottom: 30px;">Recuperaste el control neuronal.</h2>
+    <p style="color: #a1abc0; font-size: 14pt; margin-bottom: 40px; line-height: 1.6;">En la edad contemporánea la distracción generalizada se ha convertido por diseño en tu mayor ventaja estadística competitiva en el campo laboral. El dominar cognitivamente el hiper-enfoque mientras el 99% de tu competencia se hunde en trivialidades y videos de veinte segundos te separará dramáticamente del mercado garantizando resultados fuera de órbita.</p>
+    <div style="font-size: 11pt; color: #00e5c3; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 15px 30px; border: 2px solid #00e5c3; border-radius: 8px; display: inline-block;">
+      — Reinicia tu Foco. Inicia la Ejecución y Trasciende.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

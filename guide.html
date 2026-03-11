@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reinicia tu Foco — Guía Práctica</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 50px 55px 60px 55px; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; font-size: 11pt; line-height: 1.7; color: #2a2a3e; }
+  
+  /* Page breaks */
+  .page-break { page-break-after: always; }
+  .avoid-break { page-break-inside: avoid; }
+  
+  /* Cover */
+  .cover { height: 100vh; background: #0a0e1a; color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 80px 70px; position: relative; }
+  .cover-accent { width: 70px; height: 5px; background: linear-gradient(135deg, #00e5c3, #0094ff); border-radius: 3px; margin-bottom: 30px; }
+  .cover h1 { font-size: 48pt; font-weight: 900; line-height: 1.1; letter-spacing: -1px; }
+  .cover h1 span { color: #00e5c3; }
+  .cover .cover-sub { font-size: 14pt; color: #8892a8; margin-top: 24px; line-height: 1.7; max-width: 500px; }
+  .cover .cover-footer { position: absolute; bottom: 60px; left: 70px; right: 70px; border-top: 1px solid #1a2040; padding-top: 16px; }
+  .cover .cover-footer p { font-size: 9pt; color: #5a6480; }
+  .cover .cover-meta { font-size: 10pt; color: #5a6480; margin-top: 40px; }
+
+  /* TOC */
+  .toc h2 { font-size: 22pt; font-weight: 800; margin-bottom: 30px; color: #0a0e1a; }
+  .toc-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dotted #dde1e8; }
+  .toc-item.chapter { font-weight: 700; padding-top: 16px; border-bottom: 1px solid #ccc; }
+  .toc-item.chapter .toc-num { color: #0094ff; font-size: 9pt; margin-right: 10px; }
+
+  /* Chapter Page */
+  .chapter-page { height: 100vh; background: #0a0e1a; color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 80px 70px; }
+  .chapter-num { font-size: 100pt; font-weight: 900; color: #141c37; line-height: 1; }
+  .chapter-line { width: 50px; height: 4px; background: #00e5c3; border-radius: 2px; margin: 20px 0; }
+  .chapter-page h2 { font-size: 30pt; font-weight: 800; line-height: 1.2; }
+  .chapter-page .ch-sub { font-size: 12pt; color: #8892a8; margin-top: 14px; max-width: 460px; line-height: 1.7; }
+
+  /* Content */
+  h2.section { font-size: 18pt; font-weight: 800; color: #0a0e1a; margin: 30px 0 6px 0; }
+  h2.section::after { content: ''; display: block; width: 35px; height: 3px; background: #00e5c3; border-radius: 2px; margin-top: 6px; margin-bottom: 14px; }
+  h3.sub { font-size: 13pt; font-weight: 700; color: #0094ff; margin: 22px 0 8px 0; }
+  p { margin-bottom: 10px; color: #4a4a6a; }
+  
+  ul.bullets { padding-left: 0; list-style: none; margin-bottom: 14px; }
+  ul.bullets li { padding: 4px 0 4px 22px; position: relative; color: #4a4a6a; }
+  ul.bullets li::before { content: ''; position: absolute; left: 0; top: 12px; width: 8px; height: 8px; background: #00e5c3; border-radius: 50%; }
+  
+  ol.steps { padding-left: 0; list-style: none; counter-reset: step; margin-bottom: 14px; }
+  ol.steps li { padding: 6px 0 6px 32px; position: relative; color: #4a4a6a; counter-increment: step; }
+  ol.steps li::before { content: counter(step); position: absolute; left: 0; top: 5px; width: 22px; height: 22px; background: #00e5c3; border-radius: 50%; color: #fff; font-size: 10pt; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  .tip { background: #e8f8f5; border-left: 4px solid #00e5c3; padding: 14px 18px; border-radius: 6px; margin: 16px 0; font-size: 10pt; }
+  .tip strong { color: #00a88a; }
+  .warn { background: #fef5f5; border-left: 4px solid #e74c3c; padding: 14px 18px; border-radius: 6px; margin: 16px 0; font-size: 10pt; }
+  .warn strong { color: #c0392b; }
+  
+  .stat-row { display: flex; gap: 14px; margin: 18px 0; }
+  .stat-box { flex: 1; background: #f0f4f8; border-radius: 8px; padding: 16px; text-align: center; }
+  .stat-box .num { font-size: 22pt; font-weight: 900; color: #0094ff; }
+  .stat-box .lbl { font-size: 8pt; color: #666; margin-top: 4px; }
+
+  .checklist { list-style: none; padding: 0; margin: 10px 0; }
+  .checklist li { padding: 5px 0 5px 28px; position: relative; color: #4a4a6a; font-size: 10.5pt; }
+  .checklist li::before { content: '☐'; position: absolute; left: 0; font-size: 13pt; color: #ccc; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 10pt; }
+  table th { background: #0094ff; color: #fff; padding: 8px 12px; text-align: left; font-weight: 700; }
+  table td { padding: 7px 12px; border-bottom: 1px solid #e8e8ee; }
+  table tr:nth-child(even) td { background: #f8f9fc; }
+
+  .tracker { margin: 14px 0; }
+  .tracker th, .tracker td { text-align: center; font-size: 9pt; padding: 6px 4px; }
+  .tracker td.metric { text-align: left; font-size: 8.5pt; }
+  .tracker .box { display: inline-block; width: 20px; height: 16px; border: 1px solid #ddd; border-radius: 3px; }
+
+  .closing { height: 100vh; background: #0a0e1a; color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 80px 70px; }
+  .closing h2 { font-size: 28pt; font-weight: 800; line-height: 1.3; margin-bottom: 24px; }
+  .closing p { color: #8892a8; font-size: 12pt; line-height: 1.8; max-width: 460px; }
+  .closing .accent { color: #00e5c3; font-size: 18pt; font-weight: 800; margin-top: 30px; }
+  .closing .copy { position: absolute; bottom: 60px; font-size: 9pt; color: #5a6480; }
+</style>
+</head>
+<body>
+
+<!-- ═══ PORTADA ═══ -->
+<div class="cover">
+  <div class="cover-accent"></div>
+  <h1>Reinicia<br><span>tu Foco</span></h1>
+  <p class="cover-sub">Guía práctica para recuperar tu concentración en la era de las distracciones digitales</p>
+  <p class="cover-meta">Método de 3 pasos · Plan de 7 días · Ejercicios prácticos</p>
+  <div class="cover-footer"><p>© 2026 Reinicia tu Foco. Todos los derechos reservados.</p></div>
+</div>
+<div class="page-break"></div>
+
+<!-- ═══ TABLA DE CONTENIDOS ═══ -->
+<div class="toc">
+  <h2>Tabla de Contenidos</h2>
+  <div class="toc-item chapter"><span><span class="toc-num">01</span>La Crisis de Atención Digital</span></div>
+  <div class="toc-item"><span>Por qué tu cerebro está sobrecargado</span></div>
+  <div class="toc-item"><span>El costo real de las distracciones</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">02</span>Diagnóstico Digital</span></div>
+  <div class="toc-item"><span>Test de dependencia digital</span></div>
+  <div class="toc-item"><span>Mapa de distracciones personal</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">03</span>El Método Reinicia: 3 Pasos</span></div>
+  <div class="toc-item"><span>Paso 1: Auditoría de Atención</span></div>
+  <div class="toc-item"><span>Paso 2: Desintoxicación Progresiva</span></div>
+  <div class="toc-item"><span>Paso 3: Rutina de Enfoque</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">04</span>Plan de 7 Días</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">05</span>Ejercicios Prácticos</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">06</span>Checklist de Desintoxicación Digital</span></div>
+  <div class="toc-item chapter"><span><span class="toc-num">07</span>Plantillas de Rutina de Enfoque</span></div>
+</div>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 1: CRISIS DE ATENCIÓN ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">01</div>
+  <div class="chapter-line"></div>
+  <h2>La Crisis de<br>Atención Digital</h2>
+  <p class="ch-sub">Entendiendo por qué tu cerebro pierde la batalla contra las notificaciones, las redes sociales y el exceso de información.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Tu cerebro no fue diseñado para esto</h2>
+<p>Estamos viviendo la mayor crisis de atención de la historia humana. Cada día, el ser humano promedio consume más información de la que una persona del siglo XV procesaba en toda su vida.</p>
+<p>Tu cerebro evolucionó durante miles de años para enfocarse en una tarea a la vez, detectar cambios en el entorno y responder a estímulos urgentes. Hoy, la tecnología explota exactamente estos mecanismos para mantenerte pegado a la pantalla.</p>
+
+<div class="stat-row avoid-break">
+  <div class="stat-box"><div class="num">150+</div><div class="lbl">Veces que revisas tu celular al día</div></div>
+  <div class="stat-box"><div class="num">23 min</div><div class="lbl">Para recuperar el foco perdido</div></div>
+  <div class="stat-box"><div class="num">4.7h</div><div class="lbl">Horas perdidas en distracciones</div></div>
+  <div class="stat-box"><div class="num">2,617</div><div class="lbl">Notificaciones por semana</div></div>
+</div>
+
+<h3 class="sub">La economía de la atención</h3>
+<p>Las redes sociales, las apps y las plataformas de contenido no son gratuitas. Tú pagas con tu atención. Equipos de ingenieros y psicólogos trabajan para hacer sus productos lo más adictivos posible.</p>
+<p>El scroll infinito, las notificaciones push, los puntos rojos, los algoritmos de recomendación... todo está diseñado con un solo objetivo: que no puedas dejar de mirar.</p>
+
+<div class="tip avoid-break"><strong>💡 Dato clave:</strong> Un exempleado de Google reveló que las notificaciones de las apps usan los mismos principios psicológicos que las máquinas tragamonedas de los casinos.</div>
+
+<h2 class="section">El costo real de las distracciones</h2>
+<p>Las distracciones digitales no solo te hacen perder tiempo. Tienen un impacto profundo en tu capacidad cognitiva, tu bienestar emocional y tu rendimiento profesional.</p>
+
+<h3 class="sub">Impacto cognitivo</h3>
+<ul class="bullets">
+  <li>Cada interrupción requiere un promedio de 23 minutos y 15 segundos para recuperar la concentración (Universidad de California).</li>
+  <li>El "multitasking" digital reduce tu IQ efectivo en hasta 10 puntos (Instituto de Psiquiatría de Londres).</li>
+  <li>La exposición constante a notificaciones genera un estado de "atención parcial continua" que impide el pensamiento profundo.</li>
+  <li>Tu memoria de trabajo se reduce significativamente cuando tu celular está visible, incluso apagado (Universidad de Texas).</li>
+</ul>
+
+<h3 class="sub">Impacto emocional</h3>
+<ul class="bullets">
+  <li>Aumento de ansiedad y FOMO (miedo a perderse algo).</li>
+  <li>Reducción de la capacidad de disfrutar momentos presentes.</li>
+  <li>Incremento de la comparación social que afecta la autoestima.</li>
+  <li>Dificultad para tolerar el aburrimiento, esencial para la creatividad.</li>
+</ul>
+
+<div class="warn avoid-break"><strong>⚠️ La paradoja de la productividad:</strong> Cuanto más tiempo pasas "conectado", menos productivo eres realmente. La sensación de estar ocupado no es lo mismo que avanzar en lo importante.</div>
+
+<h2 class="section">¿Te identificas con esto?</h2>
+<p>Marca las situaciones que te ocurren regularmente:</p>
+<ul class="checklist">
+  <li>Desbloqueas el celular sin razón, solo por costumbre.</li>
+  <li>Abres Instagram/TikTok para "ver rápido" y 40 minutos después sigues scrolleando.</li>
+  <li>Te cuesta leer un artículo completo sin sentir la urgencia de revisar algo más.</li>
+  <li>Sientes ansiedad cuando tu celular no está cerca o se queda sin batería.</li>
+  <li>Empiezas una tarea importante y a los 5 minutos ya estás en otra cosa.</li>
+  <li>Terminas el día agotado pero sientes que no avanzaste en nada.</li>
+  <li>Necesitas ruido o estímulos constantes; el silencio te incomoda.</li>
+  <li>Revisas el celular como primera actividad al despertar.</li>
+  <li>Te cuesta mantener una conversación sin mirar tu teléfono.</li>
+  <li>Sientes que tu capacidad de concentración ha empeorado en los últimos años.</li>
+</ul>
+<p>Si marcaste 3 o más, las distracciones digitales ya están afectando tu vida significativamente. La buena noticia: tiene solución.</p>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 2: DIAGNÓSTICO DIGITAL ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">02</div>
+  <div class="chapter-line"></div>
+  <h2>Diagnóstico<br>Digital</h2>
+  <p class="ch-sub">Antes de cambiar algo, necesitas datos reales. En este capítulo mapearás exactamente tus patrones de distracción.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Test de Dependencia Digital</h2>
+<p>Responde cada pregunta con una puntuación del 1 (nunca) al 5 (siempre). Sé honesto — este test es solo para ti.</p>
+
+<table class="avoid-break">
+  <tr><th>#</th><th>Pregunta</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+  <tr><td>1</td><td>¿Revisas tu celular dentro de los primeros 10 minutos al despertar?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>2</td><td>¿Sientes ansiedad cuando no puedes acceder a tu teléfono?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>3</td><td>¿Pasas más tiempo en redes sociales del que planeas?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>4</td><td>¿Te resulta difícil completar una tarea sin interrumpirte?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>5</td><td>¿Usas el celular mientras comes, caminas o mantienes conversaciones?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>6</td><td>¿Revisas repetidamente las mismas apps aunque no haya nada nuevo?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>7</td><td>¿Tu último pensamiento antes de dormir involucra una pantalla?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>8</td><td>¿Sientes que no puedes concentrarte como antes?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>9</td><td>¿Has intentado reducir tu tiempo en pantalla sin éxito?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+  <tr><td>10</td><td>¿El ruido de una notificación te genera urgencia de revisarla?</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td><td>☐</td></tr>
+</table>
+
+<div class="tip avoid-break"><strong>Resultados:</strong><br>10-20: Relación saludable · 21-30: Señales de alerta · 31-40: Dependencia moderada · 41-50: Dependencia alta</div>
+
+<h2 class="section">Mapa de Distracciones Personal</h2>
+<h3 class="sub">Paso 1: Registra tu tiempo en pantalla</h3>
+<p>Revisa las estadísticas de tu celular (iOS: Tiempo en Pantalla / Android: Bienestar Digital) y anota:</p>
+<ul class="bullets">
+  <li>Tiempo total de pantalla diario: _______ horas</li>
+  <li>App #1 más usada: _____________ (_____ min/día)</li>
+  <li>App #2 más usada: _____________ (_____ min/día)</li>
+  <li>App #3 más usada: _____________ (_____ min/día)</li>
+  <li>Número de desbloqueos diarios: _______</li>
+</ul>
+
+<h3 class="sub">Paso 2: Identifica tus disparadores</h3>
+<ul class="bullets">
+  <li><strong>Aburrimiento:</strong> tomas el celular cuando no tienes estímulos.</li>
+  <li><strong>Ansiedad:</strong> revisas notificaciones para sentir control.</li>
+  <li><strong>Procrastinación:</strong> usas el celular para evitar tareas difíciles.</li>
+  <li><strong>Hábito:</strong> lo haces sin pensar, de forma automática.</li>
+  <li><strong>Social:</strong> ves que otros están en el celular y tú también.</li>
+</ul>
+
+<h3 class="sub">Tu Perfil de Distracción</h3>
+<ol class="steps">
+  <li><strong>El Scrolleador Compulsivo:</strong> Abres redes sociales "un segundo" y pierdes 30+ min sin darte cuenta.</li>
+  <li><strong>El Notificador Ansioso:</strong> Sientes urgencia cada vez que suena una notificación. No puedes ignorarlas.</li>
+  <li><strong>El Multitasker Caótico:</strong> Intentas hacer 5 cosas a la vez y nunca terminas nada.</li>
+  <li><strong>El Consumidor Infinito:</strong> Siempre hay más contenido para consumir: artículos, videos, podcasts.</li>
+</ol>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 3: MÉTODO 3 PASOS ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">03</div>
+  <div class="chapter-line"></div>
+  <h2>El Método Reinicia:<br>3 Pasos</h2>
+  <p class="ch-sub">Un sistema simple y progresivo para recuperar tu capacidad de concentración sin desconectarte del mundo.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Paso 1: Auditoría de Atención</h2>
+<p>El primer paso no es cambiar nada. Es observar. Durante 48 horas, vas a llevar un registro consciente de cada vez que te distraes.</p>
+<ol class="steps">
+  <li><strong>El Registro de Interrupciones:</strong> Cada vez que te descubras revisando el celular o distrayéndote, anota: la hora, qué estabas haciendo, qué te distrajo y cuánto tiempo perdiste.</li>
+  <li><strong>Los Momentos Críticos:</strong> Identifica en qué momentos del día eres más vulnerable. Para la mayoría: al despertar, después de comer y al final de la jornada.</li>
+  <li><strong>Las Emociones Detrás:</strong> Registra qué sentías justo antes de distraerte. ¿Aburrimiento? ¿Estrés? ¿Cansancio?</li>
+</ol>
+<div class="tip avoid-break"><strong>💡 Herramienta práctica:</strong> Cada registro es una línea: "10:30 | Trabajando en informe | Abrí Instagram | Aburrimiento | 15 min perdidos".</div>
+
+<h2 class="section">Paso 2: Desintoxicación Progresiva</h2>
+<p>No vamos a pedirte que borres todas tus apps. La clave es la reducción progresiva y la creación de barreras inteligentes.</p>
+
+<h3 class="sub">Nivel 1: Limpia tu entorno digital (Días 1-2)</h3>
+<ul class="bullets">
+  <li>Desactiva TODAS las notificaciones excepto llamadas y mensajes importantes.</li>
+  <li>Elimina las apps de redes sociales de tu pantalla principal.</li>
+  <li>Activa el modo "No Molestar" durante tus horas de trabajo o estudio.</li>
+  <li>Desuscríbete de newsletters que no lees.</li>
+</ul>
+
+<h3 class="sub">Nivel 2: Crea barreras de acceso (Días 3-4)</h3>
+<ul class="bullets">
+  <li>Establece límites de tiempo (30 min/día máximo por app adictiva).</li>
+  <li>Configura la pantalla en escala de grises — los colores vibrantes son parte del diseño adictivo.</li>
+  <li>Usa bloqueadores de sitios web durante horas de trabajo (Freedom, Cold Turkey, Forest).</li>
+  <li>Apaga las previsualizaciones de notificaciones en la pantalla de bloqueo.</li>
+</ul>
+
+<h3 class="sub">Nivel 3: Sustituye hábitos (Días 5-7)</h3>
+<ul class="bullets">
+  <li>Reemplaza "revisar el celular al despertar" por 5 minutos de respiración o lectura.</li>
+  <li>Cuando sientas el impulso de scrollear, haz 10 respiraciones profundas primero.</li>
+  <li>Crea una "hora sagrada" diaria donde tu celular está en otra habitación.</li>
+</ul>
+
+<h2 class="section">Paso 3: Rutina de Enfoque</h2>
+<p>El objetivo final no es usar menos tecnología — es proteger tu capacidad de hacer trabajo profundo.</p>
+
+<h3 class="sub">La Técnica de Bloques de Enfoque</h3>
+<p>Divide tu día en bloques de 90 minutos de trabajo enfocado, seguidos de descansos de 15-20 minutos:</p>
+<ol class="steps">
+  <li>Elige UNA sola tarea para todo el bloque.</li>
+  <li>Pon tu celular fuera de tu alcance visual.</li>
+  <li>Cierra todas las pestañas innecesarias del navegador.</li>
+  <li>Usa un temporizador visible (no tu celular).</li>
+  <li>Si te llega un pensamiento, anótalo en un papel y sigue.</li>
+</ol>
+
+<h3 class="sub">La Regla de los 2 Minutos</h3>
+<p>Cuando sientas el impulso de revisar tu celular, espera solo 2 minutos. La mayoría de los impulsos desaparecen en menos de 120 segundos. Este simple hábito te devuelve el control.</p>
+
+<h3 class="sub">El Ritual de Cierre</h3>
+<ul class="bullets">
+  <li>Revisa qué completaste hoy.</li>
+  <li>Anota las 3 prioridades de mañana.</li>
+  <li>Marca tu última revisión de email/mensajes.</li>
+  <li>Cierra la laptop / apaga notificaciones de trabajo.</li>
+</ul>
+<div class="tip avoid-break"><strong>💡 Progreso, no perfección:</strong> No necesitas hacer todo perfecto desde el día 1. Empieza con un bloque de enfoque al día e incrementa gradualmente.</div>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 4: PLAN DE 7 DÍAS ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">04</div>
+  <div class="chapter-line"></div>
+  <h2>Plan de<br>7 Días</h2>
+  <p class="ch-sub">Tu guía paso a paso para la primera semana. Cada día tiene objetivos claros, acciones específicas y una meta medible.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Día 1: Conciencia</h2>
+<p><strong>Hoy no cambias nada. Solo observas.</strong></p>
+<ul class="bullets">
+  <li>Revisar tu tiempo en pantalla actual y anotarlo.</li>
+  <li>Hacer el Test de Dependencia Digital (capítulo 2).</li>
+  <li>Empezar tu Registro de Interrupciones.</li>
+  <li>Identificar tus 3 apps más adictivas y tu perfil de distracción.</li>
+</ul>
+<p><em>Meta: Tener un número real de cuántas veces te distraes y cuánto tiempo pierdes.</em></p>
+
+<h2 class="section">Día 2: Limpieza Digital</h2>
+<ul class="bullets">
+  <li>Desactivar TODAS las notificaciones no esenciales.</li>
+  <li>Mover apps de redes sociales fuera de la pantalla principal.</li>
+  <li>Desuscribirte de 10+ newsletters que no lees.</li>
+  <li>Configurar "No Molestar" automático en horas de trabajo.</li>
+</ul>
+<p><em>Meta: Un entorno digital más limpio que no te bombardee con estímulos.</em></p>
+
+<h2 class="section">Día 3: Primera Barrera</h2>
+<ul class="bullets">
+  <li>Establecer límites de tiempo (30 min/día) para tus 3 apps más adictivas.</li>
+  <li>Hacer tu primer bloque de enfoque de 45 minutos.</li>
+  <li>Practicar la Regla de los 2 Minutos ante cada impulso.</li>
+</ul>
+<p><em>Meta: Completar 1 bloque de enfoque sin interrupciones digitales.</em></p>
+
+<h2 class="section">Día 4: Sustitución</h2>
+<ul class="bullets">
+  <li>Reemplazar la primera actividad de la mañana por 5 min de respiración o lectura.</li>
+  <li>Hacer 2 bloques de enfoque de 45 minutos.</li>
+  <li>Practicar una actividad de descanso sin pantalla (caminar, estirar).</li>
+</ul>
+<p><em>Meta: Pasar tu primera mañana sin celular como primera actividad.</em></p>
+
+<h2 class="section">Día 5: Profundización</h2>
+<ul class="bullets">
+  <li>Hacer 2 bloques de enfoque de 60 minutos.</li>
+  <li>Crear tu "hora sagrada": 1 hora con el celular en otra habitación.</li>
+  <li>Activar escala de grises en tu celular.</li>
+</ul>
+<p><em>Meta: Experimentar 1 hora completa sin tu celular.</em></p>
+
+<h2 class="section">Día 6: Consolidación</h2>
+<ul class="bullets">
+  <li>Hacer 3 bloques de enfoque (60-90 minutos cada uno).</li>
+  <li>Implementar tu Ritual de Cierre al terminar la jornada.</li>
+  <li>Revisar tu progreso: comparar tiempo en pantalla con el Día 1.</li>
+</ul>
+<p><em>Meta: Completar 3 bloques de enfoque y cerrar el día con el ritual.</em></p>
+
+<h2 class="section">Día 7: Celebración y Sistema</h2>
+<ul class="bullets">
+  <li>Hacer 3 bloques de enfoque de 90 minutos.</li>
+  <li>Comparar tus métricas del Día 1 con las de hoy.</li>
+  <li>Diseñar tu Rutina de Enfoque semanal usando las plantillas.</li>
+  <li>Celebrar tu progreso — has dado un paso enorme.</li>
+</ul>
+
+<h3 class="sub">Tu progreso esperado después de 7 días</h3>
+<ul class="bullets">
+  <li>Tiempo en pantalla reducido un 30-50%.</li>
+  <li>Capacidad de mantener enfoque durante 60-90 minutos seguidos.</li>
+  <li>Rutina matutina sin celular establecida.</li>
+  <li>Menos ansiedad por notificaciones y FOMO.</li>
+  <li>Un sistema claro que puedes seguir usando indefinidamente.</li>
+</ul>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 5: EJERCICIOS PRÁCTICOS ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">05</div>
+  <div class="chapter-line"></div>
+  <h2>Ejercicios<br>Prácticos</h2>
+  <p class="ch-sub">Actividades de 10-15 minutos diseñadas para reprogramar tu relación con la tecnología.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Ejercicio 1: La Pausa de 60 Segundos</h2>
+<p>Antes de desbloquear tu celular, haz una pausa de 60 segundos:</p>
+<ol class="steps">
+  <li>Pregúntate: "¿Para qué estoy abriendo el celular?"</li>
+  <li>Si no tienes una razón clara, guárdalo.</li>
+  <li>Si tienes una razón, establece un tiempo límite antes de empezar.</li>
+</ol>
+
+<h2 class="section">Ejercicio 2: El Inventario de Atención</h2>
+<p>Al final de cada día, dedica 5 minutos a responder:</p>
+<ul class="bullets">
+  <li>¿Cuáles fueron mis 3 logros más importantes hoy?</li>
+  <li>¿Cuántos bloques de enfoque completé?</li>
+  <li>¿En qué momento perdí más tiempo en distracciones?</li>
+  <li>¿Qué emoción estaba sintiendo cuando me distraje?</li>
+  <li>¿Qué haré diferente mañana?</li>
+</ul>
+
+<h2 class="section">Ejercicio 3: La Caminata sin Pantalla</h2>
+<p>Sal a caminar 15-20 minutos SIN tu celular (o con él en modo avión). Observa tu entorno, escucha los sonidos, siente el clima. Si te parece imposible dejar tu celular, esa sensación confirma por qué necesitas este ejercicio.</p>
+
+<h2 class="section">Ejercicio 4: Meditación de Enfoque (5 min)</h2>
+<ol class="steps">
+  <li><strong>Siéntate cómodo y cierra los ojos.</strong> No necesitas posición especial.</li>
+  <li><strong>Enfócate en tu respiración.</strong> Cuenta cada inhalación del 1 al 10, luego repite.</li>
+  <li><strong>Cuando tu mente divague, vuelve.</strong> Cada vez que notas la divagación y vuelves, fortaleces tu enfoque.</li>
+  <li><strong>Incrementa gradualmente.</strong> Empieza con 5 min y añade 1 min por semana.</li>
+</ol>
+
+<h2 class="section">Ejercicio 5: El Día de Bajo Estímulo</h2>
+<p>Una vez por semana (ideal: domingo), practica un día de bajo estímulo digital:</p>
+<ul class="bullets">
+  <li>Máximo 30 minutos de redes sociales en todo el día.</li>
+  <li>Nada de scroll pasivo — solo interacciones intencionales.</li>
+  <li>Reemplaza tiempo de pantalla con: lectura, ejercicio, cocinar, socializar.</li>
+</ul>
+<div class="tip avoid-break"><strong>💡 Dato científico:</strong> Un solo día de reducción digital a la semana puede reducir los niveles de cortisol (hormona del estrés) en un 23%.</div>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 6: CHECKLIST ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">06</div>
+  <div class="chapter-line"></div>
+  <h2>Checklist de<br>Desintoxicación<br>Digital</h2>
+  <p class="ch-sub">Tu lista paso a paso para limpiar tu entorno digital. Imprime esta página y marca cada acción completada.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Checklist del Celular</h2>
+<ul class="checklist">
+  <li>Revisar y anotar mi tiempo en pantalla actual</li>
+  <li>Desactivar notificaciones de redes sociales</li>
+  <li>Desactivar notificaciones de email</li>
+  <li>Desactivar previsualizaciones en pantalla de bloqueo</li>
+  <li>Mover apps de redes sociales a última página o carpeta</li>
+  <li>Eliminar apps que llevo meses sin usar</li>
+  <li>Configurar límites de tiempo para apps adictivas</li>
+  <li>Activar "No Molestar" automático en horario laboral</li>
+  <li>Programar modo "No Molestar" nocturno (22:00 - 07:00)</li>
+  <li>Activar escala de grises durante horas de trabajo</li>
+  <li>Desactivar autoplay de videos</li>
+  <li>Configurar un fondo de pantalla minimalista</li>
+</ul>
+
+<h2 class="section">Checklist del Computador</h2>
+<ul class="checklist">
+  <li>Cerrar todas las pestañas innecesarias del navegador</li>
+  <li>Instalar un bloqueador de sitios web (Freedom, Cold Turkey)</li>
+  <li>Desactivar notificaciones del navegador</li>
+  <li>Cerrar apps de chat durante bloques de enfoque</li>
+  <li>Desactivar autoplay en YouTube y streaming</li>
+  <li>Limpiar el escritorio: máximo 5 archivos visibles</li>
+  <li>Organizar marcadores: eliminar los que no usas</li>
+  <li>Configurar bloques de enfoque en tu calendario</li>
+</ul>
+
+<h2 class="section">Checklist de Hábitos</h2>
+<ul class="checklist">
+  <li>No revisar el celular durante los primeros 30 minutos del día</li>
+  <li>No llevar el celular al baño</li>
+  <li>No usar pantallas durante las comidas</li>
+  <li>Establecer un horario fijo para revisar email (2-3 veces al día)</li>
+  <li>Establecer un horario fijo para redes sociales (1 vez al día)</li>
+  <li>Crear una rutina matutina de 10 min sin pantallas</li>
+  <li>Implementar el Ritual de Cierre al final de cada jornada</li>
+  <li>Practicar la Regla de los 2 Minutos ante cada impulso</li>
+</ul>
+<div class="page-break"></div>
+
+<!-- ═══ CAP 7: PLANTILLAS ═══ -->
+<div class="chapter-page">
+  <div class="chapter-num">07</div>
+  <div class="chapter-line"></div>
+  <h2>Plantillas de<br>Rutina de<br>Enfoque</h2>
+  <p class="ch-sub">Templates listos para usar. Personaliza tu día alrededor de bloques de concentración profunda.</p>
+</div>
+<div class="page-break"></div>
+
+<h2 class="section">Plantilla 1: Rutina Matutina sin Pantallas</h2>
+<table>
+  <tr><th>Hora</th><th>Actividad</th><th>Notas</th></tr>
+  <tr><td>6:00</td><td>Despertar (sin celular)</td><td>Alarma convencional</td></tr>
+  <tr><td>6:05</td><td>5 min respiración / meditación</td><td>Sentado en la cama</td></tr>
+  <tr><td>6:10</td><td>Hidratación + movimiento</td><td>Vaso grande de agua</td></tr>
+  <tr><td>6:20</td><td>Ejercicio ligero (10 min)</td><td>Estiramientos o caminata</td></tr>
+  <tr><td>6:30</td><td>Desayuno SIN pantallas</td><td>Presente y consciente</td></tr>
+  <tr><td>6:50</td><td>Lectura (10 min)</td><td>Libro físico</td></tr>
+  <tr><td>7:00</td><td>Planificar el día (5 min)</td><td>Libreta o planificador</td></tr>
+  <tr><td>7:05</td><td>Primera revisión de celular</td><td>Solo mensajes urgentes</td></tr>
+  <tr><td>7:15</td><td>Inicio del primer bloque de enfoque</td><td>90 min de trabajo profundo</td></tr>
+</table>
+
+<h2 class="section">Plantilla 2: Jornada con Bloques de Enfoque</h2>
+<table>
+  <tr><th>Hora</th><th>Actividad</th><th>Notas</th></tr>
+  <tr><td>7:15</td><td>BLOQUE 1 — Trabajo profundo</td><td>90 min · Celular fuera</td></tr>
+  <tr><td>8:45</td><td>Descanso activo</td><td>15 min · Sin pantallas</td></tr>
+  <tr><td>9:00</td><td>Revisión de mensajes/email</td><td>15 min máximo</td></tr>
+  <tr><td>9:15</td><td>BLOQUE 2 — Trabajo profundo</td><td>90 min · Tarea principal</td></tr>
+  <tr><td>10:45</td><td>Descanso + snack</td><td>20 min · Caminar</td></tr>
+  <tr><td>11:05</td><td>BLOQUE 3 — Tareas secundarias</td><td>60 min · Email, admin</td></tr>
+  <tr><td>12:05</td><td>Almuerzo SIN pantallas</td><td>45 min · Desconexión</td></tr>
+  <tr><td>12:50</td><td>BLOQUE 4 — Trabajo creativo</td><td>90 min · Proyecto personal</td></tr>
+  <tr><td>14:20</td><td>Revisión final de mensajes</td><td>15 min</td></tr>
+  <tr><td>14:35</td><td>Ritual de Cierre</td><td>10 min · Preparar mañana</td></tr>
+</table>
+
+<h2 class="section">Plantilla 3: Tracker Semanal de Enfoque</h2>
+<p>Imprime esta planilla y llévala contigo durante la semana:</p>
+<table class="tracker">
+  <tr><th>Métrica</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr>
+  <tr><td class="metric">Bloques de enfoque completados</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Tiempo en pantalla (horas)</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Regla de 2 min aplicada</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Mañana sin celular (Sí/No)</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Ritual de cierre (Sí/No)</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Nivel de energía (1-10)</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+  <tr><td class="metric">Satisfacción del día (1-10)</td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td><td><span class="box"></span></td></tr>
+</table>
+
+<h2 class="section">Reflexión Semanal</h2>
+<p>Al final de cada semana, responde:</p>
+<ul class="bullets">
+  <li>¿Cuántos bloques de enfoque completé? ___/___</li>
+  <li>¿Mi tiempo en pantalla aumentó o disminuyó? _______</li>
+  <li>¿Cuál fue mi mayor distracción esta semana? _______</li>
+  <li>¿Qué estrategia me funcionó mejor? _______</li>
+  <li>¿Qué ajustaré la próxima semana? _______</li>
+</ul>
+<div class="page-break"></div>
+
+<!-- ═══ CIERRE ═══ -->
+<div class="closing">
+  <div class="chapter-line"></div>
+  <h2>Tu concentración<br>te está esperando.</h2>
+  <p>Cada día que aplicas estos principios, tu cerebro se reconfigura. La concentración no es un talento — es un músculo que se entrena.</p>
+  <p style="margin-top:16px;">Ya tienes todas las herramientas. Ahora el siguiente paso es tuyo.</p>
+  <div class="accent">Reinicia tu Foco.</div>
+  <p class="copy">© 2026 Reinicia tu Foco. Todos los derechos reservados.</p>
+</div>
+
+</body>
+</html>

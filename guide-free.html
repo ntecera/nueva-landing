@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reinicia tu Foco — Starter Edition (Gratis)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 25mm 25mm; }
+  @page edge-to-edge { margin: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+  body { font-size: 11pt; line-height: 1.6; color: #2a2a3e; background: #fff; }
+
+  /* PORTADA */
+  .cover { 
+    page: edge-to-edge; height: 100vh; background: radial-gradient(circle at top right, #f4f6f8, #e5e9f0); 
+    color: #0a1128; display: flex; flex-direction: column; padding: 25mm; position: relative; page-break-after: always;
+    border: 1px solid #d1d9e6; box-sizing: border-box;
+  }
+  .cover-content { position: relative; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+  .cover-badge { 
+    display: inline-block; padding: 6px 14px; background: #0094ff; color: #fff;
+    border-radius: 4px; font-size: 9pt; font-weight: 700; 
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; width: fit-content;
+  }
+  .cover h1 { font-size: 50pt; font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; color: #0a1128;}
+  .cover h1 .highlight { color: #0094ff; display: block; }
+  .cover p.subtitle { font-size: 13pt; font-weight: 400; color: #4a5568; max-width: 500px; line-height: 1.5; }
+  
+  .cover-footer { border-top: 1px solid #d1d9e6; padding-top: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .cover-footer .author { font-size: 13pt; font-weight: 700; color: #0a1128; }
+  .cover-footer .edition { font-size: 9pt; color: #0094ff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* CONTENIDO FLUIDO */
+  .header-flow { display: flex; justify-content: space-between; font-size: 8pt; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; border-bottom: 1px solid #edf1f7; padding-bottom: 10px; margin-bottom: 30px; }
+  h2.section { font-size: 20pt; font-weight: 800; color: #0a1128; margin: 35px 0 15px 0; letter-spacing: -0.5px; page-break-after: avoid; }
+  h3.sub { font-size: 14pt; font-weight: 700; color: #2a2a3e; margin: 25px 0 10px 0; border-bottom: 1px solid #edf1f7; padding-bottom: 5px; page-break-after: avoid;}
+  p { margin-bottom: 15px; font-size: 11pt; color: #4a5568; }
+  strong { color: #0a1128; }
+  
+  ul.bullets, ol.steps { margin: 15px 0; padding-left: 0; list-style: none; }
+  ul.bullets li { padding: 5px 0 5px 24px; position: relative; color: #4a5568; margin-bottom: 8px; page-break-inside: avoid;}
+  ul.bullets li::before { content: '→'; position: absolute; left: 0; color: #0094ff; font-weight: bold; }
+
+  /* CAJAS */
+  .box { margin: 24px 0; padding: 20px 24px; border-radius: 12px; background: #fff; border: 1px solid #edf1f7; box-shadow: 0 4px 15px rgba(0,0,0,0.03); page-break-inside: avoid; }
+  .box-title { font-size: 11pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; }
+  .box-key { border-top: 4px solid #0094ff; background: #f0f7ff; }
+  .box-key .box-title { color: #0073cc; }
+
+  .data-table { width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #edf1f7; page-break-inside: avoid;}
+  .data-table th { background: #f8f9fc; color: #0a1128; padding: 12px 14px; text-align: left; font-size: 9pt; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #edf1f7;}
+  .data-table td { padding: 12px 14px; border-bottom: 1px solid #edf1f7; color: #4a5568; font-size: 10.5pt; }
+
+  /* UPSELL */
+  .upsell-page {
+    page: edge-to-edge; height: 100vh; background: #0a1128; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25mm; text-align: center; page-break-before: always;
+  }
+  .upsell-page h2 { font-size: 32pt; font-weight: 900; line-height: 1.1; margin-bottom: 24px; color: #fff; }
+  .upsell-page p { font-size: 13pt; color: #a1abc0; max-width: 550px; line-height: 1.6; margin-bottom: 30px; }
+  .btn-premium { display: inline-block; background: #00e5c3; color: #0a1128; padding: 16px 32px; border-radius: 8px; font-weight: 800; text-decoration: none; font-size: 12pt; text-transform: uppercase; letter-spacing: 1px; }
+
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-content">
+    <div class="cover-badge">Starter Edition (Gratis)</div>
+    <h1>Reinicia<br><span class="highlight">tu Foco</span></h1>
+    <p class="subtitle">La mini-guía de primeros auxilios para detener la fuga de tiempo y recuperar tus mañanas libres de la adicción al scroll pasivo.</p>
+  </div>
+  <div class="cover-footer">
+    <div class="author">Versión de Muestra / Starter</div>
+    <div class="edition">Edición 2026</div>
+  </div>
+</div>
+
+<div class="header-flow"><span>Introducción Rápida</span><span>Starter Guide</span></div>
+
+<h2 class="section">Sección 1: Tu cerebro no fue diseñado para esto</h2>
+<p>Estamos viviendo la mayor crisis de atención de la historia humana. Cada día, la persona promedio consume más información de la que un ser humano del siglo XV procesaba en su vida entera.</p>
+<p>Nuestros cerebros evolucionaron durante milenos para enfocarse en tareas singulares. Hoy, la industria tecnológica usa estos mismos atajos cognitivos para hacerte adicto a la <em>"Recompensa Variable"</em>, usando el mismo modelo psicológico de las tragamonedas de casino.</p>
+
+<div class="box box-key">
+  <div class="box-title">💡 La Trampa de la Atención</div>
+  <p>Creemos que revisar un mensaje toma "solo un segundo", pero la neurociencia lo define como <strong>Residuo de Atención</strong>. Cuando vuelves a tu tarea original, parte de tu coeficiente sigue atorado pensando en el mensaje anterior, mutilando tu IQ funcional.</p>
+</div>
+
+<h2 class="section">Sección 2: Test de Dependencia Asintomática (Muestra)</h2>
+<p>Califica del 1 al 5 las siguientes situaciones de alarma reales de dependencia dopaminérgica. (1: Rara vez / 5: Absolutamente yo).</p>
+
+<table class="data-table">
+  <tr><th>Signo Clínico Temprano</th><th>Tu Número</th></tr>
+  <tr><td>1. Revisas tu celular en los primeros 10 minutos desde que despiertas.</td><td>____</td></tr>
+  <tr><td>2. Sentir pánico o falta de aire leve si sales a la calle y olvidaste tu teléfono o cargador.</td><td>____</td></tr>
+  <tr><td>3. Procrastinas el empezar un documento de Word abriendo pestañas de Youtube en silencio.</td><td>____</td></tr>
+  <tr><td>4. Eres incapaz de ir al auto o al baño sin llevarte el dispositivo.</td><td>____</td></tr>
+</table>
+
+<p><em>*Si obtuviste más de 12 puntos en solo 4 preguntas, el algoritmo gobierna tus picos de dopamina. Debes cortar la hemorragia hoy mismo siguiendo las instrucciones del próximo apartado.</em></p>
+
+<h2 class="section">Sección 3: Primeros Auxilios (Apocalipsis 24 Hrs)</h2>
+<p>Para frenar el secuestro instantáneo, ejecuta estas 3 directrices de choque sin pensar ni cuestionarlas durante las próximas 24 horas.</p>
+
+<ul class="bullets">
+  <li><strong>El Apagón de Notificaciones:</strong> Silencia todas las notificaciones push. Todas. Nadie ha muerto por no ver un like de Instagram al milisegundo. Tú decidirás cuándo entrar a la red, y no que una "burbuja emergente roja" ordene tu mirada.</li>
+  <li><strong>El Cargador Desterrado:</strong> Está estrictamente prohibido cargar tu smartphone al lado de la cama en el cuarto. El teléfono carga en la cocina o pasillo. Si lo usas de alarma, cómprate uno clásico que cuesta menos que un café.</li>
+  <li><strong>Escala de Grises:</strong> Dirígete a Ajustes -> Accesibilidad y cambia tu filtro cromático a Blanco y Negro absoluto. Al quitarle los vibrantes azules celestes y los puntos de color manzana, tu teléfono perderá drásticamente su encanto biológico.</li>
+</ul>
+
+<!-- UPSELL -->
+<div class="upsell-page">
+  <h2>¿Listo para el verdadero Trabajo Profundo?</h2>
+  <p>Has leído apenas el 5% del Sistema. El verdadero libro <strong>"Reinicia Tu Foco: Premium Edition" (20+ Páginas)</strong> está diseñado para que logres instalar cognitivamente el <em>"Estado de Flujo"</em> a tu voluntad y el Sistema Estricto de 7 Días apoyado por Calendario, Tablas Clínicas y Hábitos Indestructibles.</p>
+  
+  <ul style="text-align: left; max-width: 500px; margin: 0 auto 40px auto; color: #00e5c3; font-size: 13pt; list-style: none; padding: 0;">
+    <li style="margin-bottom: 15px;">✓ Más de 24 Páginas Editoriales y Visuales de Alto Rango</li>
+    <li style="margin-bottom: 15px;">✓ Calendarios "Tracker" Grid de 7 Días de Desintoxicación</li>
+    <li style="margin-bottom: 15px;">✓ Matriz Semanal de Costumbre y Hábitos Operativos</li>
+    <li style="margin-bottom: 15px;">✓ Pomodoro Modificado 90/20 y Triggers Auditivos (Binaural)</li>
+  </ul>
+
+  <!-- Nota: El dueño debe configurar Gumroad Link aquí en el boton final de PDF interactivo si desea -->
+  <div style="font-size: 11pt; color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 20px 40px; border: 2px solid #00e5c3; border-radius: 8px; display: inline-block;">
+      Adquiere la Premium Edition Hoy Mismo
+  </div>
+</div>
+
+</body>
+</html>
